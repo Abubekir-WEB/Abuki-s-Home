@@ -1,0 +1,319 @@
+
+/* =====================================
+   CHAT — X-INSPIRED LIGHT THEME
+===================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.chat-page {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: block;
+  background: #fff;
+  color: #0f1419;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Main people-list panel */
+.chat-container {
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+  border-radius: 0;
+  background: #fff;
+}
+
+/* =====================================
+   HEADER
+===================================== */
+
+.chat-header {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: none;
+  background: #fff;
+}
+
+.chat-heading-info {
+  min-width: 0;
+}
+
+.chat-heading-info h1 {
+  margin: 0;
+  color: #0f1419;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.chat-heading-info p {
+  margin: 5px 0 0;
+  color: #536471;
+  font-size: 13px;
+}
+
+.user-count {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  border: 1px solid #cfd9de;
+  border-radius: 999px;
+  background: #fff;
+  color: #536471;
+  font-size: 12px;
+}
+
+/* =====================================
+   SEARCH
+===================================== */
+
+.chat-search {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 16px 14px;
+  padding: 0 15px;
+  border: 1px solid #cfd9de;
+  border-radius: 999px;
+  background: #f7f9f9;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.chat-search:focus-within {
+  border-color: #1d9bf0;
+  background: #fff;
+}
+
+.search-icon {
+  flex-shrink: 0;
+  color: #536471;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.chat-search input {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #0f1419;
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.chat-search input::placeholder {
+  color: #536471;
+}
+
+/* =====================================
+   PEOPLE LIST HEADING
+===================================== */
+
+.chat-list-heading {
+  padding: 10px 20px 14px;
+  border-bottom: 1px solid #eff3f4;
+  background: #fff;
+}
+
+.chat-list-heading h2 {
+  margin: 0;
+  color: #0f1419;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* =====================================
+   USER LIST
+===================================== */
+
+.chat-user-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chat-user-list li {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid #eff3f4;
+}
+
+/* Individual person */
+.chat-user {
+  width: 100%;
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 0;
+  background: #fff;
+  color: #0f1419;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.chat-user:hover {
+  background: #f7f9f9;
+}
+
+.chat-user:focus-visible {
+  position: relative;
+  outline: 2px solid #1d9bf0;
+  outline-offset: -3px;
+}
+
+/* Avatar */
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #a946c3;
+  color: #fff;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+/* Name and supporting text */
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-info h3 {
+  margin: 0;
+  color: #0f1419;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.user-info p {
+  margin: 4px 0 0;
+  color: #536471;
+  font-size: 13px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+/* Optional arrow if present in your JSX */
+.user-arrow {
+  flex-shrink: 0;
+  color: #536471;
+  font-size: 22px;
+  transition: color 0.15s ease;
+}
+
+.chat-user:hover .user-arrow {
+  color: #1d9bf0;
+}
+
+/* =====================================
+   LOADING, EMPTY AND ERROR STATES
+===================================== */
+
+.chat-status {
+  margin: 0;
+  padding: 32px 20px;
+  color: #536471;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.chat-error {
+  margin: 0;
+  padding: 28px 20px;
+  color: #b91c1c;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+/* =====================================
+   TABLET
+===================================== */
+
+@media (max-width: 900px) {
+  .chat-header {
+    padding: 15px 16px;
+  }
+
+  .chat-heading-info h1 {
+    font-size: 20px;
+  }
+
+  .chat-user {
+    gap: 10px;
+    padding: 13px 14px;
+  }
+
+  .user-avatar {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+  .chat-page,
+  .chat-container {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .chat-header {
+    min-height: 58px;
+    padding: 14px 16px;
+  }
+
+  .chat-search {
+    margin: 10px 14px 12px;
+  }
+
+  .chat-list-heading {
+    padding: 11px 16px 13px;
+  }
+
+  .chat-user {
+    min-height: 72px;
+    padding: 12px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-search,
+  .chat-user,
+  .user-arrow {
+    transition: none;
+  }
+}

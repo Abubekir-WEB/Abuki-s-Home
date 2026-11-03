@@ -1,0 +1,85 @@
+:root {
+  --like-muted: #536471;
+  --like-accent: #f91880;
+  --like-hover: rgb(249 24 128 / 10%);
+}
+
+.x-like {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--like-muted);
+  font: 400 13px/20px Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 150ms ease;
+}
+
+.x-like__icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  transition: background-color 150ms ease;
+}
+
+.x-like__icon svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.x-like__count {
+  min-width: 3ch;
+  padding: 0 4px;
+  text-align: left;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.x-like--active,
+.x-like:hover:not(:disabled),
+.x-like:focus-visible {
+  color: var(--like-accent);
+}
+
+.x-like:hover:not(:disabled) .x-like__icon,
+.x-like:focus-visible .x-like__icon {
+  background: var(--like-hover);
+}
+
+.x-like:focus-visible {
+  outline: none;
+}
+
+.x-like:focus-visible .x-like__icon {
+  outline: 2px solid var(--like-accent);
+  outline-offset: 2px;
+}
+
+.x-like--active svg {
+  animation: heart-pop 300ms ease-out;
+}
+
+.x-like:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+@keyframes heart-pop {
+  0% { transform: scale(0.65); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-like, .x-like__icon { transition: none; }
+  .x-like--active svg { animation: none; }
+}

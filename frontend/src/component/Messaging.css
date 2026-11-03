@@ -1,0 +1,211 @@
+
+* {
+  box-sizing: border-box;
+}
+
+.messaging-page {
+  min-height: 100vh;
+  padding: 24px;
+  background: #f3f5f9;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.messaging-layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  width: 100%;
+  max-width: 1200px;
+  height: calc(100vh - 48px);
+  min-height: 500px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgb(15 23 42 / 5%);
+}
+
+.messaging-sidebar {
+  min-width: 0;
+  overflow-y: auto;
+  border-right: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.messaging-conversation {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #fafbfc;
+}
+
+.conversation-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 32px;
+  text-align: center;
+}
+
+.placeholder-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  background: #eaf0ff;
+  color: #2563eb;
+  font-size: 30px;
+}
+
+.conversation-placeholder h2 {
+  margin: 0 0 10px;
+  color: #111827;
+  font-size: 21px;
+}
+
+.conversation-placeholder p {
+  max-width: 300px;
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* Remove the old standalone page spacing */
+.messaging-sidebar .chat-page,
+.messaging-conversation .inbox-page {
+  min-height: 0;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+}
+
+.messaging-sidebar .chat-container,
+.messaging-conversation .inbox-container {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.messaging-sidebar .chat-container {
+  padding: 20px 14px;
+}
+
+.messaging-conversation .inbox-container {
+  flex: 1;
+}
+
+/* Tablet and mobile */
+@media (max-width: 760px) {
+  .messaging-page {
+    padding: 0;
+  }
+
+  .messaging-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(220px, 38%) minmax(0, 1fr);
+    height: 100vh;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .messaging-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .messaging-sidebar .chat-container {
+    padding: 14px;
+  }
+
+  .messaging-sidebar .chat-header {
+    padding-bottom: 12px;
+  }
+
+  .messaging-sidebar .chat-search {
+    margin: 12px 0;
+  }
+
+  .messaging-sidebar .chat-user {
+    padding: 8px;
+  }
+
+  .messaging-conversation .inbox-container {
+    height: 100%;
+  }
+}
+
+/* Make both grid columns stretch fully */
+.messaging-layout {
+  align-items: stretch;
+}
+
+/* Let the conversation occupy the entire right panel */
+.messaging-conversation {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Remove standalone Inbox page sizing */
+.messaging-conversation .inbox-page {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Make the Inbox container fill the available area */
+.messaging-conversation .inbox-container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Only the message history should scroll */
+.messaging-conversation .inbox-messages {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Keep the header and input at their natural heights */
+.messaging-conversation .inbox-header,
+.messaging-conversation .inbox-form {
+  flex-shrink: 0;
+}
