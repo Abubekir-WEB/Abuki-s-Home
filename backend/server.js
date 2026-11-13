@@ -6,14 +6,14 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { Chat } from './controller/chat.js';
+import { Chat } from './controller/Chat.js';
 import { notification } from './controller/notification.js';
 const app=express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: { origin: "http://localhost:5173" },
 });
-
+app.set("io", io);
 // Recreate __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

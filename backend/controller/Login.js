@@ -23,7 +23,7 @@ function Login(req, res) {
 
         if (result.length === 0) {
             console.log("3. User not found");
-            return res.status(404).json("User Not Found");
+            return res.status(404).json("Invalid email or password");
         }
 
         try {
@@ -40,7 +40,7 @@ function Login(req, res) {
             console.log("5. Password comparison:", isMatch);
 
             if (!isMatch) {
-                return res.status(401).json("Invalid credential");
+                return res.status(401).json("Invalid email or password ");
             }
 
             const jwtSecretKey = process.env.JWT_SECRET_KEY;

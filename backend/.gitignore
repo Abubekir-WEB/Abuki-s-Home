@@ -1,2 +1,5 @@
 .env;
 node_modules
+uploads/
+chat-report.json
+chat-stress-report.json
