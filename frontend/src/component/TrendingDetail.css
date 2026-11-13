@@ -1,0 +1,167 @@
+
+/* =================================
+   TRENDING DETAILS PAGE
+================================= */
+
+.trending-details-page {
+    width: 100%;
+    max-width: 720px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: #ffffff;
+    border-left: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+/* =================================
+   PAGE HEADER
+================================= */
+
+.trending-details-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.trending-details-header h1 {
+    margin: 0;
+    color: #111827;
+    font-size: 21px;
+    font-weight: 750;
+}
+
+.trending-details-header p {
+    margin: 3px 0 0;
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.trending-back-button {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #374151;
+
+    font-size: 25px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.trending-back-button:hover {
+    background: #f3f4f6;
+}
+
+/* =================================
+   TOPIC INFORMATION
+================================= */
+
+.trending-details-info {
+    padding: 28px 24px;
+    background: linear-gradient(135deg, #eff6ff, #ffffff);
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.trending-details-label {
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.trending-details-info h2 {
+    margin: 10px 0 7px;
+    color: #111827;
+    font-size: 25px;
+    font-weight: 750;
+    letter-spacing: -0.7px;
+    overflow-wrap: anywhere;
+}
+
+.trending-details-info p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* =================================
+   POSTS
+================================= */
+
+.trending-details-feed {
+    width: 100%;
+}
+
+.trending-details-feed .post-card {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* =================================
+   LOADING / EMPTY / ERROR
+================================= */
+
+.trending-details-message {
+    padding: 55px 20px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.trending-details-message h3 {
+    margin: 0 0 8px;
+    color: #111827;
+}
+
+.trending-details-message p {
+    line-height: 1.6;
+}
+
+.trending-details-message button {
+    margin-top: 12px;
+    padding: 9px 20px;
+    border: none;
+    border-radius: 20px;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.trending-details-message button:hover {
+    background: #1d4ed8;
+}
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 700px) {
+    .trending-details-page {
+        border: none;
+    }
+
+    .trending-details-header {
+        padding: 14px 16px;
+    }
+
+    .trending-details-info {
+        padding: 24px 18px;
+    }
+
+    .trending-details-info h2 {
+        font-size: 21px;
+    }
+}

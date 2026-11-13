@@ -26,7 +26,7 @@ function Login() {
             );
 
             console.log(response.data);
-
+              
             // Save JWT token
             localStorage.setItem("token", response.data);
 

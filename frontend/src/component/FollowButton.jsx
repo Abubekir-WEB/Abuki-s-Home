@@ -19,31 +19,31 @@ function FollowButton({ userid, currentUserId }) {
     loggedInUserId > 0 &&
     loggedInUserId === targetUserId;
 
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   useEffect(() => {
     let cancelled = false;
 
-    async function checkFollowing() {
-      if (
-        !token ||
-        !Number.isInteger(targetUserId) ||
-        targetUserId <= 0 ||
-        isOwnProfile
-      ) {
-        setChecking(false);
-        return;
-      }
+    if (
+      !token ||
+      !Number.isInteger(targetUserId) ||
+      targetUserId <= 0 ||
+      isOwnProfile
+    ) {
+      setChecking(false);
+      return;
+    }
 
-      try {
-        setChecking(true);
+    setChecking(true);
 
-        const response = await axios.get(
-          `${API_URL}/follower`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+    axios
+      .get(`${API_URL}/follower`, config)
+      .then((response) => {
+        if (cancelled) return;
 
         const following = Array.isArray(response.data?.following)
           ? response.data.following
@@ -51,37 +51,32 @@ function FollowButton({ userid, currentUserId }) {
 
         const alreadyFollowing = following.some((user) => {
           const followedId =
-            user.userid ??
-            user.userId ??
-            user.following_id;
+            user.userid ?? user.userId ?? user.following_id;
 
           return Number(followedId) === targetUserId;
         });
 
-        if (!cancelled) {
-          setIsFollowing(alreadyFollowing);
-        }
-      } catch (err) {
+        setIsFollowing(alreadyFollowing);
+      })
+      .catch((err) => {
         console.error("Failed to check following status:", err);
 
         if (!cancelled) {
           setError("Couldn't check follow status.");
         }
-      } finally {
+      })
+      .finally(() => {
         if (!cancelled) {
           setChecking(false);
         }
-      }
-    }
-
-    checkFollowing();
+      });
 
     return () => {
       cancelled = true;
     };
   }, [token, targetUserId, isOwnProfile]);
 
-  async function handleFollow() {
+  function handleFollow() {
     if (!token) {
       setError("Please log in first.");
       return;
@@ -92,44 +87,34 @@ function FollowButton({ userid, currentUserId }) {
     setLoading(true);
     setError("");
 
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      if (isFollowing) {
-        await axios.delete(
-          `${API_URL}/follow/${targetUserId}`,
-          config
-        );
-
-        setIsFollowing(false);
-      } else {
-        await axios.post(
+    const request = isFollowing
+      ? axios.delete(`${API_URL}/follow/${targetUserId}`, config)
+      : axios.post(
           `${API_URL}/follow`,
           { userid: targetUserId },
           config
         );
 
-        setIsFollowing(true);
-      }
-    } catch (err) {
-      console.error(
-        "Follow action failed:",
-        err.response?.data || err.message
-      );
+    request
+      .then(() => {
+        setIsFollowing((previous) => !previous);
+      })
+      .catch((err) => {
+        console.error(
+          "Follow action failed:",
+          err.response?.data || err.message
+        );
 
-      setError(
-        err.response?.data?.message ||
-          (err.response?.status === 401
-            ? "Please log in again."
-            : "Unable to update follow status.")
-      );
-    } finally {
-      setLoading(false);
-    }
+        setError(
+          err.response?.data?.message ||
+            (err.response?.status === 401
+              ? "Please log in again."
+              : "Unable to update follow status.")
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   if (isOwnProfile) return null;

@@ -1,3 +1,21 @@
+/* ============ X / Twitter light theme tokens ============ */
+:root {
+  --cm-font: "TwitterChirp", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --cm-bg: #ffffff;
+  --cm-text: #0f1419;
+  --cm-text-secondary: #536471;
+  --cm-border: #eff3f4;
+  --cm-line: #cfd9de;
+  --cm-blue: #1d9bf0;
+  --cm-blue-hover-bg: rgba(29, 155, 240, 0.1);
+  --cm-hover-bg: rgba(15, 20, 25, 0.1);
+  --cm-row-hover: rgba(0, 0, 0, 0.03);
+  --cm-red: #f4212e;
+  --cm-btn-bg: #0f1419;
+  --cm-btn-bg-hover: #272c30;
+  --cm-btn-text: #ffffff;
+}
+
 /* ============ Reply button (X style) ============ */
 .cm-trigger {
   display: inline-flex;
@@ -7,9 +25,9 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  color: #71767b;
+  color: var(--cm-text-secondary);
   font-size: 13px;
-  font-family: inherit;
+  font-family: var(--cm-font);
   transition: color 0.2s;
 }
 
@@ -30,11 +48,11 @@
 }
 
 .cm-trigger:hover {
-  color: #1d9bf0;
+  color: var(--cm-blue);
 }
 
 .cm-trigger:hover .cm-trigger__icon {
-  background-color: rgba(29, 155, 240, 0.1);
+  background-color: var(--cm-blue-hover-bg);
 }
 
 .cm-trigger__count {
@@ -51,7 +69,7 @@
   align-items: flex-start;
   justify-content: center;
   padding: 5vh 16px;
-  background: rgba(91, 112, 131, 0.4);
+  background: rgba(0, 0, 0, 0.4);
   animation: cm-fade 0.15s ease-out;
 }
 
@@ -61,12 +79,12 @@
   width: 100%;
   max-width: 600px;
   max-height: 90vh;
-  background: #000;
-  color: #e7e9ea;
+  background: var(--cm-bg);
+  color: var(--cm-text);
   border-radius: 16px;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), 0 0 3px rgba(255, 255, 255, 0.15);
+  font-family: var(--cm-font);
+  box-shadow: rgba(101, 119, 134, 0.2) 0 0 15px, rgba(101, 119, 134, 0.15) 0 0 3px 1px;
   animation: cm-pop 0.2s ease-out;
 }
 
@@ -97,13 +115,13 @@
   background: none;
   border: none;
   border-radius: 50%;
-  color: #e7e9ea;
+  color: var(--cm-text);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .cm-close:hover {
-  background-color: rgba(231, 233, 234, 0.1);
+  background-color: var(--cm-hover-bg);
 }
 
 .cm-close svg {
@@ -117,7 +135,7 @@
   overflow-y: auto;
   min-height: 80px;
   scrollbar-width: thin;
-  scrollbar-color: #333639 transparent;
+  scrollbar-color: var(--cm-line) transparent;
 }
 
 /* ============ Comment items ============ */
@@ -142,7 +160,7 @@
   flex: 1;
   width: 2px;
   margin-top: 4px;
-  background: #333639;
+  background: var(--cm-line);
   border-radius: 1px;
 }
 
@@ -162,7 +180,7 @@
 
 .cm-item__name {
   font-weight: 700;
-  color: #e7e9ea;
+  color: var(--cm-text);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -170,7 +188,7 @@
 
 .cm-item__dot,
 .cm-item__time {
-  color: #71767b;
+  color: var(--cm-text-secondary);
   flex-shrink: 0;
 }
 
@@ -178,7 +196,7 @@
   margin: 2px 0 0;
   font-size: 15px;
   line-height: 20px;
-  color: #e7e9ea;
+  color: var(--cm-text);
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -189,7 +207,7 @@
 }
 
 .cm-clickable:hover {
-  background-color: rgba(231, 233, 234, 0.03);
+  background-color: var(--cm-row-hover);
 }
 
 /* ============ Show more / less ============ */
@@ -201,18 +219,18 @@
   border: none;
   text-align: left;
   font-size: 15px;
-  font-family: inherit;
-  color: #1d9bf0;
+  font-family: var(--cm-font);
+  color: var(--cm-blue);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .cm-more:hover {
-  background-color: rgba(29, 155, 240, 0.08);
+  background-color: var(--cm-row-hover);
 }
 
 .cm-footer-row {
-  border-top: 1px solid #2f3336;
+  border-top: 1px solid var(--cm-border);
   margin-top: 4px;
 }
 
@@ -220,7 +238,7 @@
   display: block;
   padding: 10px 16px 0 68px;
   font-size: 13px;
-  color: #71767b;
+  color: var(--cm-text-secondary);
 }
 
 .cm-more--collapse {
@@ -244,19 +262,20 @@
   margin: 0 0 4px;
   font-size: 20px;
   font-weight: 800;
+  color: var(--cm-text);
 }
 
 .cm-state--empty p {
   margin: 0;
   font-size: 15px;
-  color: #71767b;
+  color: var(--cm-text-secondary);
 }
 
 .cm-spinner {
   width: 28px;
   height: 28px;
-  border: 3px solid #2f3336;
-  border-top-color: #1d9bf0;
+  border: 3px solid var(--cm-border);
+  border-top-color: var(--cm-blue);
   border-radius: 50%;
   animation: cm-spin 0.7s linear infinite;
 }
@@ -270,7 +289,7 @@
   flex-shrink: 0;
   border-radius: 50%;
   object-fit: cover;
-  background: #16181c;
+  background: var(--cm-line);
 }
 
 .cm-avatar--fallback {
@@ -278,8 +297,8 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  color: #fff;
-  background: linear-gradient(135deg, #1d9bf0, #7856ff);
+  color: #ffffff;
+  background: var(--cm-blue);
 }
 
 /* ============ Composer ============ */
@@ -287,7 +306,7 @@
   display: flex;
   gap: 12px;
   padding: 12px 16px;
-  border-top: 1px solid #2f3336;
+  border-top: 1px solid var(--cm-border);
   flex-shrink: 0;
 }
 
@@ -306,20 +325,20 @@
   border: none;
   outline: none;
   resize: none;
-  font-family: inherit;
+  font-family: var(--cm-font);
   font-size: 20px;
   line-height: 24px;
-  color: #e7e9ea;
+  color: var(--cm-text);
 }
 
 .cm-composer__input::placeholder {
-  color: #71767b;
+  color: var(--cm-text-secondary);
 }
 
 .cm-error {
   margin: 4px 0 0;
   font-size: 13px;
-  color: #f4212e;
+  color: var(--cm-red);
 }
 
 .cm-composer__actions {
@@ -338,7 +357,7 @@
 
 .cm-ring-bg {
   fill: none;
-  stroke: #2f3336;
+  stroke: var(--cm-line);
   stroke-width: 2;
 }
 
@@ -351,17 +370,17 @@
 
 .cm-counter__num {
   font-size: 13px;
-  color: #71767b;
+  color: var(--cm-text-secondary);
 }
 
 .cm-post {
   height: 36px;
   padding: 0 18px;
-  background: #eff3f4;
-  color: #0f1419;
+  background: var(--cm-btn-bg);
+  color: var(--cm-btn-text);
   border: none;
   border-radius: 9999px;
-  font-family: inherit;
+  font-family: var(--cm-font);
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
@@ -369,7 +388,7 @@
 }
 
 .cm-post:hover:not(:disabled) {
-  background: #d7dbdc;
+  background: var(--cm-btn-bg-hover);
 }
 
 .cm-post:disabled {

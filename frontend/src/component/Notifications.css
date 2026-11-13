@@ -1,219 +1,405 @@
-/* Notifications.css — matches your existing Notifications component.
-   Uses the device theme automatically. Set data-theme="light" or
-   data-theme="dark" on <html> to override it. No React changes needed. */
-.notifications {
-  --notification-bg: #ffffff;
-  --notification-fg: #0f1419;
-  --notification-muted: #536471;
-  --notification-border: #eff3f4;
-  --notification-hover: #f7f9f9;
-  --notification-blue: #1d9bf0;
-  --notification-on-blue: #ffffff;
-  --notification-ring: #8ecdf8;
-  --notification-shadow: 0 8px 28px rgb(15 20 25 / 12%);
-  position: relative;
-  width: fit-content;
-  max-width: 100%;
-  color: var(--notification-fg);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
-  letter-spacing: 0;
-  color-scheme: light;
+/* Notifications.css — Abuki's Home (X / Twitter light mode) — v3, matches Notifications.jsx */
+
+/* Same tokens as comments-light.css — keep both files on one palette */
+:root {
+  --cm-font: "TwitterChirp", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --cm-bg: #ffffff;
+  --cm-text: #0f1419;
+  --cm-text-secondary: #536471;
+  --cm-border: #eff3f4;
+  --cm-line: #cfd9de;
+  --cm-blue: #1d9bf0;
+  --cm-blue-hover-bg: rgba(29, 155, 240, 0.1);
+  --cm-hover-bg: rgba(15, 20, 25, 0.1);
+  --cm-row-hover: rgba(0, 0, 0, 0.03);
+  --cm-red: #f4212e;
+  --cm-pink: #f91880;
+  --cm-pink-soft: rgba(249, 24, 128, 0.1);
+  --cm-green: #00ba7c;
+  --cm-green-soft: rgba(0, 186, 124, 0.1);
+  --cm-shadow: rgba(101, 119, 134, 0.2) 0 0 15px, rgba(101, 119, 134, 0.15) 0 0 3px 1px;
+
+  /* Size controls — change these (or override per element) to resize the panel */
+  --notif-width: 370px;          /* any value: 480px, 600px, 40vw, 100vw ... */
+  --notif-max-height: 420px;     /* height of the scrolling list */
+  --notif-edge-gap: 12px;        /* space kept from the screen edge */
+  --notif-tab-indicator: 56px;   /* width of the blue bar under the active tab */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .notifications {
-    --notification-bg: #000000;
-    --notification-fg: #e7e9ea;
-    --notification-muted: #71767b;
-    --notification-border: #2f3336;
-    --notification-hover: #16181c;
-    --notification-ring: #1d9bf0;
-    --notification-shadow: 0 8px 28px rgb(255 255 255 / 9%);
-    color-scheme: dark;
-  }
+/* Ready-made sizes: add one of these next to .notification-modal */
+.notification-modal--wide {
+  --notif-width: 600px;
+  --notif-max-height: 560px;
+  --notif-tab-indicator: 72px;
 }
 
-:root[data-theme="dark"] .notifications {
-  --notification-bg: #000000;
-  --notification-fg: #e7e9ea;
-  --notification-muted: #71767b;
-  --notification-border: #2f3336;
-  --notification-hover: #16181c;
-  --notification-ring: #1d9bf0;
-  --notification-shadow: 0 8px 28px rgb(255 255 255 / 9%);
-  color-scheme: dark;
+.notification-modal--full {
+  --notif-width: 100vw;          /* fills the screen, minus the edge gap */
+  --notif-max-height: 70vh;
+  --notif-tab-indicator: 72px;
 }
 
-.notifications,
-.notifications * { box-sizing: border-box; }
-
-.notifications .notification-button {
+.notification-wrapper {
   position: relative;
   display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 14px;
-  min-height: 52px;
-  max-width: 100%;
-  padding: 12px 18px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--notification-fg);
-  font: inherit;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 1.3;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color 160ms ease;
+  font-family: var(--cm-font);
+  color: var(--cm-text);
 }
 
-/* A crisp bell without extra markup or an icon dependency. */
-.notifications .notification-button::before {
-  content: "";
-  display: block;
-  flex: 0 0 26px;
-  width: 26px;
-  height: 26px;
-  background: currentColor;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z'/%3E%3Cpath d='M10 21h4'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z'/%3E%3Cpath d='M10 21h4'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
-}
-
-.notifications .notification-button:hover,
-.notifications .notification-button[aria-expanded="true"] {
-  background: var(--notification-hover);
-}
-.notifications .notification-button[aria-expanded="true"] { font-weight: 700; }
-.notifications .notification-button:focus-visible {
-  outline: 2px solid var(--notification-ring);
-  outline-offset: 3px;
-}
-
-.notifications .notification-badge {
-  position: absolute;
-  top: 4px;
-  left: 33px;
+/* Notification trigger */
+.notification-trigger {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 19px;
-  height: 19px;
-  padding: 0 4px;
-  border: 2px solid var(--notification-bg);
-  border-radius: 999px;
-  background: var(--notification-blue);
-  color: var(--notification-on-blue);
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--cm-text);
+  font-family: var(--cm-font);
+  font-size: 15px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-.notifications .notification-list {
+.notification-trigger:hover {
+  background: var(--cm-hover-bg);
+  color: var(--cm-text);
+}
+
+.bell-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.notification-label {
+  white-space: nowrap;
+}
+
+.notification-badge {
   position: absolute;
-  z-index: 100;
-  top: calc(100% + 8px);
-  left: 0;
-  width: 380px;
-  max-width: calc(100vw - 32px);
-  max-height: min(480px, 65dvh);
-  overflow-x: hidden;
+  top: 0;
+  right: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--cm-bg);
+  border-radius: 9999px;
+  background: var(--cm-blue);
+  color: #ffffff;
+  font-family: var(--cm-font);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Modal */
+.notification-modal {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 14px);
+  width: min(var(--notif-width), calc(100vw - (var(--notif-edge-gap) * 2)));
+  overflow: hidden;
+  z-index: 1001;
+
+  background: var(--cm-bg);
+  color: var(--cm-text);
+  font-family: var(--cm-font);
+  border: 0;
+  border-radius: 16px;
+  box-shadow: var(--cm-shadow);
+
+  transform-origin: bottom right;
+  animation: notificationOpen 0.2s ease-out both;
+}
+
+@keyframes notificationOpen {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+.notification-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 53px;
+  padding: 0 16px;
+}
+
+.notification-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 24px;
+  color: var(--cm-text);
+}
+
+.close-notification {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--cm-text);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.close-notification svg {
+  width: 20px;
+  height: 20px;
+}
+
+.close-notification:hover {
+  background: var(--cm-hover-bg);
+  color: var(--cm-text);
+}
+
+/* Tabs (X style: equal width, bold active, blue underline) */
+.notification-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--cm-border);
+}
+
+.notification-tabs button {
+  position: relative;
+  flex: 1;
+  height: 53px;
+  padding: 0 16px;
+  border: 0;
+  background: transparent;
+  color: var(--cm-text-secondary);
+  font-family: var(--cm-font);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.notification-tabs button:hover {
+  background: var(--cm-hover-bg);
+}
+
+.notification-tabs button.active {
+  color: var(--cm-text);
+  font-weight: 700;
+}
+
+.notification-tabs button.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  transform: translateX(-50%);
+  width: var(--notif-tab-indicator);
+  max-width: 100%;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--cm-blue);
+}
+
+/* Notification list */
+.notification-content {
+  max-height: var(--notif-max-height);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color: var(--notification-muted) var(--notification-bg);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border: 1px solid var(--notification-border);
-  border-radius: 8px;
-  background: var(--notification-bg);
-  box-shadow: var(--notification-shadow);
-  animation: notification-appear 160ms ease-out;
+  scrollbar-color: var(--cm-line) transparent;
 }
 
-.notifications .notification-list::before {
-  content: "Notifications";
-  position: sticky;
-  z-index: 1;
-  top: 0;
-  display: block;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--notification-border);
-  background: var(--notification-bg);
-  color: var(--notification-fg);
-  font-size: 20px;
-  font-weight: 800;
-  line-height: 1.3;
+.notification-content::-webkit-scrollbar {
+  width: 5px;
 }
 
-.notifications .notification-item {
+.notification-content::-webkit-scrollbar-thumb {
+  background: var(--cm-line);
+  border-radius: 9999px;
+}
+
+.notification-item {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
-  margin: 0;
-  padding: 18px 20px;
-  border-bottom: 1px solid var(--notification-border);
-  color: var(--notification-fg);
-  font-size: 15px;
-  line-height: 1.55;
-  overflow-wrap: anywhere;
-  white-space: pre-wrap;
-  transition: background-color 160ms ease;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--cm-border);
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
-.notifications .notification-item::before {
-  content: "";
-  flex: 0 0 8px;
+
+.notification-item:hover {
+  background: var(--cm-row-hover);
+}
+
+.notification-item:focus-visible {
+  outline: 2px solid var(--cm-blue);
+  outline-offset: -2px;
+}
+
+.notification-icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--cm-blue-hover-bg);
+  color: var(--cm-blue);
+}
+
+.notification-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Icon colors per notification type (like = pink, repost = green, rest = blue) */
+.notification-icon--blue {
+  background: var(--cm-blue-hover-bg);
+  color: var(--cm-blue);
+}
+
+.notification-icon--like {
+  background: var(--cm-pink-soft);
+  color: var(--cm-pink);
+}
+
+.notification-icon--repost {
+  background: var(--cm-green-soft);
+  color: var(--cm-green);
+}
+
+.notification-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-details p {
+  margin: 0 0 2px;
+  color: var(--cm-text);
+  font-size: 15px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+
+.notification-details span {
+  color: var(--cm-text-secondary);
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.notification-unread-dot {
+  flex-shrink: 0;
   width: 8px;
   height: 8px;
-  margin-top: 8px;
+  margin-top: 6px;
   border-radius: 50%;
-  background: var(--notification-blue);
+  background: var(--cm-blue);
 }
-.notifications .notification-item:last-child { border-bottom: 0; }
-.notifications .notification-item:hover { background: var(--notification-hover); }
 
-.notifications .empty-notifications {
-  margin: 0;
-  padding: 48px 24px;
-  color: var(--notification-muted);
-  font-size: 15px;
-  line-height: 1.5;
+/* Empty state */
+.notification-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px;
   text-align: center;
 }
 
-@keyframes notification-appear {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
+.notification-empty > span {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: var(--cm-blue-hover-bg);
+  color: var(--cm-blue);
 }
 
+.notification-empty > span svg {
+  width: 26px;
+  height: 26px;
+}
+
+.notification-empty h4 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 24px;
+  color: var(--cm-text);
+}
+
+.notification-empty p {
+  max-width: 260px;
+  margin: 0;
+  color: var(--cm-text-secondary);
+  font-size: 15px;
+  line-height: 20px;
+}
+
+/* Footer */
+.notification-footer {
+  padding: 12px 16px;
+  border-top: 1px solid var(--cm-border);
+  color: var(--cm-text-secondary);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Keyboard accessibility */
+.notification-trigger:focus-visible,
+.close-notification:focus-visible,
+.notification-tabs button:focus-visible {
+  outline: 2px solid var(--cm-blue);
+  outline-offset: 2px;
+}
+
+/* Mobile */
 @media (max-width: 480px) {
-  .notifications .notification-button {
-    min-height: 48px;
-    padding: 11px 14px;
-    gap: 12px;
-    font-size: 18px;
-  }
-  .notifications .notification-badge { left: 29px; }
-  .notifications .notification-list {
+  .notification-modal {
     position: fixed;
     top: auto;
-    right: 16px;
-    bottom: max(16px, env(safe-area-inset-bottom));
-    left: 16px;
-    width: auto;
-    max-width: none;
-    max-height: 65dvh;
+    bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+    right: var(--notif-edge-gap);
+    width: min(var(--notif-width), calc(100vw - (var(--notif-edge-gap) * 2)));
+    transform-origin: bottom right;
   }
-  .notifications .notification-item { padding: 16px; }
+
+  .notification-content {
+    max-height: min(55vh, var(--notif-max-height));
+  }
+
+  .notification-label {
+    display: none;
+  }
+
+  .notification-trigger {
+    width: 42px;
+    height: 42px;
+    padding: 8px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .notifications .notification-list { animation: none; }
-  .notifications .notification-button,
-  .notifications .notification-item { transition: none; }
+  .notification-modal {
+    animation: none;
+  }
 }

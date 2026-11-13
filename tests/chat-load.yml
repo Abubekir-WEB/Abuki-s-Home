@@ -1,0 +1,14 @@
+config:
+  target: "http://127.0.0.1:4000"
+
+  phases:
+    - duration: 30
+      arrivalRate: 5
+      rampTo: 15
+      name: "Increasing chat traffic"
+
+scenarios:
+  - name: "Chat connection test"
+    engine: socketio
+    flow:
+      - think: 30

@@ -1,0 +1,247 @@
+
+/* =================================
+   TRENDING TOPICS CARD
+================================= */
+
+.trending-card {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.035);
+
+    overflow: hidden;
+}
+
+/* =================================
+   HEADER
+================================= */
+
+.trending-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.trending-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin: 0;
+
+    color: #111827;
+    font-size: 18px;
+    font-weight: 750;
+    letter-spacing: -0.5px;
+}
+
+.trending-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 9px;
+    background: #eff6ff;
+
+    color: #2563eb;
+    font-size: 20px;
+}
+
+/* =================================
+   REFRESH BUTTON
+================================= */
+
+.trending-refresh {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #9ca3af;
+
+    font-size: 23px;
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.3s ease;
+}
+
+.trending-refresh:hover {
+    background: #eff6ff;
+    color: #2563eb;
+    transform: rotate(45deg);
+}
+
+.trending-refresh:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 3px;
+}
+
+/* =================================
+   TRENDING ITEMS
+================================= */
+
+.trending-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.trending-item {
+    position: relative;
+
+    padding: 15px 10px;
+
+    border-bottom: 1px solid #f1f3f5;
+
+    cursor: default;
+
+    transition:
+        background 0.2s ease,
+        padding-left 0.2s ease;
+}
+
+.trending-item:hover {
+    background: #f8fafc;
+    padding-left: 14px;
+}
+
+.trending-item:last-child {
+    border-bottom: none;
+}
+
+.trending-position {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #9ca3af;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.trending-item h4 {
+    margin: 0 0 6px;
+
+    color: #1d4ed8;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+
+    overflow-wrap: anywhere;
+}
+
+.trending-count {
+    display: block;
+
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+/* =================================
+   LOADING / EMPTY / ERROR STATES
+================================= */
+
+.trending-message {
+    padding: 25px 10px;
+
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.trending-message p {
+    margin: 6px 0 0;
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.trending-error {
+    color: #dc2626;
+}
+
+.trending-error button {
+    margin-top: 12px;
+    padding: 8px 17px;
+
+    border: none;
+    border-radius: 20px;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.trending-error button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* =================================
+   FOOTER
+================================= */
+
+.trending-footer {
+    margin-top: 8px;
+    padding-top: 14px;
+
+    border-top: 1px solid #f1f3f5;
+
+    color: #9ca3af;
+    font-size: 11px;
+    text-align: center;
+}
+
+/* =================================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 900px) {
+    .trending-card {
+        padding: 16px;
+        border-radius: 15px;
+    }
+
+    .trending-header h3 {
+        font-size: 16px;
+    }
+
+    .trending-item {
+        padding: 13px 8px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .trending-card *,
+    .trending-card *::before,
+    .trending-card *::after {
+        transition: none !important;
+    }
+}
