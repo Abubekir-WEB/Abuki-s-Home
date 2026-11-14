@@ -14,6 +14,7 @@ import { jwtDecode } from "jwt-decode";
 import Notifications from "./Notifications";
 import LikeButton from "./LikeButton";
 import CommentButton from "./CommentButton";
+import UploadFile from "./UploadFile";
 
 import "./Posts.css";
 
@@ -80,7 +81,6 @@ function PostViewTracker({ postId, token, onViewRecorded }) {
 
   useEffect(() => {
     if (!postId || !token || !postRef.current) return;
-
     if (hasRecordedView.current) return;
 
     const element = postRef.current;
@@ -145,10 +145,8 @@ function NewsCard({ article }) {
 
   return (
     <article className="news-card">
-
       <div className="news-card-label">
         <span>📰</span> News
-
         {article.source?.name && (
           <span> · {article.source.name}</span>
         )}
@@ -167,7 +165,6 @@ function NewsCard({ article }) {
       )}
 
       <div className="news-content">
-
         <h3>{article.title}</h3>
 
         {article.description && (
@@ -189,7 +186,6 @@ function NewsCard({ article }) {
             Read full story →
           </a>
         )}
-
       </div>
     </article>
   );
@@ -204,10 +200,12 @@ function Posts() {
   const [news, setNews] = useState([]);
   const [newsLoading, setNewsLoading] = useState(true);
 
+  // Create Post modal state.
+  const [showUploadModal, setShowUploadModal] = useState(false);
+
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
-
   const currentUserId = getCurrentUserId(token);
 
   // Fetch posts from backend.
@@ -240,7 +238,6 @@ function Posts() {
       }
 
       setPosts(fetchedPosts);
-
     } catch (err) {
       console.error(
         "Failed to fetch posts:",
@@ -251,7 +248,6 @@ function Posts() {
         err.response?.data?.message ||
           "Unable to load posts. Please try again."
       );
-
     } finally {
       setLoading(false);
     }
@@ -271,7 +267,6 @@ function Posts() {
             : []
         );
       }
-
     } catch (err) {
       console.error(
         "Failed to fetch news:",
@@ -279,7 +274,6 @@ function Posts() {
       );
 
       setNews([]);
-
     } finally {
       setNewsLoading(false);
     }
@@ -313,8 +307,9 @@ function Posts() {
     navigate("/messaging");
   }
 
+  // Open Create Post modal.
   function uploadFile() {
-    navigate("/uploadfile");
+    setShowUploadModal(true);
   }
 
   function openProfile() {
@@ -358,7 +353,6 @@ function Posts() {
 
       feedItems.push(
         <Fragment key={postId ?? `post-${index}`}>
-
           <article className="post-card">
 
             {/* Detect when this post becomes visible */}
@@ -381,7 +375,6 @@ function Posts() {
               aria-label={`View ${authorName}'s profile`}
             >
               <div className="post-avatar">
-
                 {profileImage ? (
                   <img
                     src={profileImage}
@@ -397,7 +390,6 @@ function Posts() {
                       : "U"}
                   </span>
                 )}
-
               </div>
             </Link>
 
@@ -406,9 +398,7 @@ function Posts() {
 
               {/* Author information */}
               <div className="post-card-header">
-
                 <div className="post-author-info">
-
                   <Link
                     to={
                       validAuthorId
@@ -423,7 +413,6 @@ function Posts() {
                   <span className="post-handle">
                     @user{authorId} · Post
                   </span>
-
                 </div>
               </div>
 
@@ -453,7 +442,6 @@ function Posts() {
               {/* Like, comment and view actions */}
               {postId != null && (
                 <div className="post-actions">
-
                   <CommentButton postId={postId} />
 
                   <LikeButton
@@ -476,18 +464,14 @@ function Posts() {
                     )} views`}
                   >
                     <span aria-hidden="true">👁</span>
-
                     <span>
                       {Number(item.viewCount ?? 0)} Views
                     </span>
                   </div>
-
                 </div>
               )}
-
             </div>
           </article>
-
         </Fragment>
       );
 
@@ -519,7 +503,6 @@ function Posts() {
 
       {/* Feed tabs */}
       <div className="posts-tabs">
-
         <div className="tab active">
           For you
         </div>
@@ -527,20 +510,15 @@ function Posts() {
         <div className="tab">
           <Link to="/follow">Following</Link>
         </div>
-
       </div>
 
       {/* Posts feed */}
       <main className="posts-container">
-
         {loading ? (
-
           <div className="posts-empty">
             <p>Loading posts...</p>
           </div>
-
         ) : error ? (
-
           <div className="posts-empty">
             <p>{error}</p>
 
@@ -548,9 +526,7 @@ function Posts() {
               Try again
             </button>
           </div>
-
         ) : posts.length === 0 ? (
-
           <div className="posts-empty">
             <h2>Welcome to your feed</h2>
 
@@ -568,11 +544,8 @@ function Posts() {
                 />
               ))
             )}
-
           </div>
-
         ) : (
-
           <>
             {renderPosts()}
 
@@ -582,9 +555,7 @@ function Posts() {
               </div>
             )}
           </>
-
         )}
-
       </main>
 
       {/* Bottom navigation */}
@@ -634,8 +605,15 @@ function Posts() {
 
           <span>Profile</span>
         </button>
-
       </nav>
+
+      {/* Create Post Modal */}
+      {showUploadModal && (
+        <UploadFile
+          onClose={() => setShowUploadModal(false)}
+          onPostSuccess={fetchPosts}
+        />
+      )}
 
     </div>
   );

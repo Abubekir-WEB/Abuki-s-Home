@@ -15,6 +15,7 @@ import Unfollow from "../controller/UnFollow.js";
 import getUsers from "../controller/getUsers.js";
 import { getNews } from "../controller/news.js";
 import { getTrendingDetails } from "../controller/TrendingDetails.js";
+import { getRecommendations } from "../controller/recommendations.js";
 
 
 
@@ -78,6 +79,7 @@ router.put(
   upload.single("profilePicture"),
   uploadProfilePicture
 );
+router.get("/recommendations", middleware, getRecommendations);
 
 // router.get('/chat',Chat)
 export default router

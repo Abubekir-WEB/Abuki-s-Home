@@ -1,211 +1,323 @@
+/* ==========================================================================
+   Messaging.css — Apple Messages (macOS & iPadOS Split View)
+   Designed for Messaging.jsx with companion Inbox.css
+   Full Light & Dark mode support (Apple System Palette)
+   ========================================================================== */
 
-* {
+/* ---------- Design Tokens ---------- */
+:root {
+  /* Typography — Apple SF Pro font stack */
+  --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "SF Compact Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Colors (macOS Sequoia / iOS 18 Light Palette) */
+  --msg-page-bg: #ececf0;
+  --msg-window-bg: rgba(255, 255, 255, 0.82);
+  --msg-sidebar-bg: rgba(246, 246, 248, 0.78);
+  --msg-conversation-bg: rgba(255, 255, 255, 0.92);
+
+  --msg-text-primary: #1d1d1f;
+  --msg-text-secondary: #6e6e73;
+  --msg-text-tertiary: #86868b;
+  --msg-separator: rgba(60, 60, 67, 0.12);
+
+  --msg-accent: #007aff;
+  --msg-accent-hover: #0068d9;
+  --msg-accent-soft: rgba(0, 122, 255, 0.12);
+  --msg-accent-glow: rgba(0, 122, 255, 0.22);
+
+  --msg-icon-bg: linear-gradient(180deg, #ffffff 0%, #f2f2f7 100%);
+  --msg-icon-border: rgba(60, 60, 67, 0.1);
+
+  /* Geometry & Shadows */
+  --msg-radius-window: 22px;
+  --msg-radius-sidebar: 14px;
+  --msg-sidebar-width: 320px;
+  --msg-window-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 20px 60px rgba(0, 0, 0, 0.12);
+
+  /* Apple easing curves */
+  --msg-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --msg-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --msg-page-bg: #000000;
+    --msg-window-bg: rgba(28, 28, 30, 0.85);
+    --msg-sidebar-bg: rgba(36, 36, 38, 0.78);
+    --msg-conversation-bg: rgba(22, 22, 24, 0.92);
+
+    --msg-text-primary: #f5f5f7;
+    --msg-text-secondary: #a1a1a6;
+    --msg-text-tertiary: #8e8e93;
+    --msg-separator: rgba(84, 84, 88, 0.35);
+
+    --msg-accent: #0a84ff;
+    --msg-accent-hover: #339aff;
+    --msg-accent-soft: rgba(10, 132, 255, 0.2);
+    --msg-accent-glow: rgba(10, 132, 255, 0.35);
+
+    --msg-icon-bg: linear-gradient(180deg, #323236 0%, #242426 100%);
+    --msg-icon-border: rgba(255, 255, 255, 0.12);
+
+    --msg-window-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 30px 80px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* ---------- Page Outer Container ---------- */
+.messaging-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px;
+  box-sizing: border-box;
+  font-family: var(--font-system);
+  color: var(--msg-text-primary);
+  background:
+    radial-gradient(1200px 700px at 15% -10%, var(--msg-accent-soft), transparent 60%),
+    radial-gradient(900px 500px at 105% 105%, rgba(175, 82, 222, 0.08), transparent 60%),
+    var(--msg-page-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.messaging-page *,
+.messaging-page *::before,
+.messaging-page *::after {
   box-sizing: border-box;
 }
 
-.messaging-page {
-  min-height: 100vh;
-  padding: 24px;
-  background: #f3f5f9;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
+/* ---------- macOS App Window Frame ---------- */
 .messaging-layout {
-  display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
   width: 100%;
-  max-width: 1200px;
-  height: calc(100vh - 48px);
-  min-height: 500px;
-  margin: 0 auto;
-  overflow: hidden;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  box-shadow: 0 4px 20px rgb(15 23 42 / 5%);
-}
-
-.messaging-sidebar {
-  min-width: 0;
-  overflow-y: auto;
-  border-right: 1px solid #e5e7eb;
-  background: #ffffff;
-}
-
-.messaging-conversation {
+  max-width: 1140px;
+  height: min(840px, calc(100dvh - 56px));
   display: flex;
-  min-width: 0;
-  min-height: 0;
+  background: var(--msg-window-bg);
+  border: 1px solid var(--msg-separator);
+  border-radius: var(--msg-radius-window);
+  box-shadow: var(--msg-window-shadow);
   overflow: hidden;
-  background: #fafbfc;
+  position: relative;
+  backdrop-filter: saturate(190%) blur(30px);
+  -webkit-backdrop-filter: saturate(190%) blur(30px);
 }
 
+/* ---------- Sidebar (Chat / User List) ---------- */
+.messaging-sidebar {
+  width: var(--msg-sidebar-width);
+  min-width: 280px;
+  max-width: 360px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--msg-sidebar-bg);
+  border-right: 1px solid var(--msg-separator);
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  transition: width 0.3s var(--msg-ease);
+}
+
+.messaging-sidebar > * {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Apple-style thin smooth scrollbars */
+.messaging-sidebar ::-webkit-scrollbar,
+.messaging-conversation ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.messaging-sidebar ::-webkit-scrollbar-track,
+.messaging-conversation ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messaging-sidebar ::-webkit-scrollbar-thumb,
+.messaging-conversation ::-webkit-scrollbar-thumb {
+  background: rgba(142, 142, 147, 0.3);
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+.messaging-sidebar ::-webkit-scrollbar-thumb:hover,
+.messaging-conversation ::-webkit-scrollbar-thumb:hover {
+  background: rgba(142, 142, 147, 0.55);
+  background-clip: padding-box;
+}
+
+.messaging-sidebar button,
+.messaging-sidebar input {
+  font-family: inherit;
+}
+
+/* ---------- Conversation Area ---------- */
+.messaging-conversation {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--msg-conversation-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- Empty State (Conversation Placeholder) ---------- */
 .conversation-placeholder {
+  flex: 1;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: 32px;
+  padding: 36px 24px;
   text-align: center;
+  user-select: none;
 }
 
 .placeholder-icon {
+  width: 76px;
+  height: 76px;
+  margin-bottom: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 68px;
-  height: 68px;
-  margin-bottom: 20px;
-  border-radius: 50%;
-  background: #eaf0ff;
-  color: #2563eb;
-  font-size: 30px;
+  border-radius: 20px;
+  background: var(--msg-icon-bg);
+  border: 1px solid var(--msg-icon-border);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: var(--msg-accent);
+  font-size: 34px;
+  line-height: 1;
+  transition: transform 0.25s var(--msg-ease-bounce), box-shadow 0.25s var(--msg-ease);
+}
+
+.conversation-placeholder:hover .placeholder-icon {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 14px 28px var(--msg-accent-glow);
 }
 
 .conversation-placeholder h2 {
-  margin: 0 0 10px;
-  color: #111827;
+  margin: 0 0 8px;
   font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.024em;
+  color: var(--msg-text-primary);
+  line-height: 1.25;
 }
 
 .conversation-placeholder p {
-  max-width: 300px;
   margin: 0;
-  color: #6b7280;
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 14.5px;
+  line-height: 1.45;
+  letter-spacing: -0.012em;
+  color: var(--msg-text-secondary);
+  max-width: 290px;
 }
 
-/* Remove the old standalone page spacing */
-.messaging-sidebar .chat-page,
+/* ---------- Seamless Inbox.jsx Nested Integration Overrides ---------- */
 .messaging-conversation .inbox-page {
-  min-height: 0;
-  height: 100%;
-  padding: 0;
-  background: transparent;
-}
-
-.messaging-sidebar .chat-container,
-.messaging-conversation .inbox-container {
-  width: 100%;
-  max-width: none;
-  height: 100%;
-  min-height: 0;
-  margin: 0;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-.messaging-sidebar .chat-container {
-  padding: 20px 14px;
+  min-height: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  background: transparent !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
 }
 
 .messaging-conversation .inbox-container {
-  flex: 1;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
 }
 
-/* Tablet and mobile */
-@media (max-width: 760px) {
-  .messaging-page {
-    padding: 0;
+.messaging-conversation .inbox-header {
+  border-radius: 0 !important;
+  background: var(--msg-conversation-bg) !important;
+}
+
+.messaging-conversation .inbox-form {
+  border-radius: 0 !important;
+  background: var(--msg-conversation-bg) !important;
+}
+
+/* ---------- Responsive Breakpoints (Tablets & Phones) ---------- */
+@media (max-width: 860px) {
+  :root {
+    --msg-sidebar-width: 280px;
   }
 
   .messaging-layout {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(220px, 38%) minmax(0, 1fr);
-    height: 100vh;
-    min-height: 0;
-    border: 0;
+    max-width: 100%;
+    height: min(840px, calc(100dvh - 32px));
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 680px) {
+  .messaging-page {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .messaging-layout {
+    height: 100dvh;
+    border: none;
     border-radius: 0;
+    box-shadow: none;
+  }
+
+  .messaging-layout:has(.messaging-conversation:not(:empty):not(:has(.conversation-placeholder))) .messaging-sidebar {
+    display: none;
+  }
+
+  .messaging-layout:has(.conversation-placeholder) .messaging-conversation {
+    display: none;
   }
 
   .messaging-sidebar {
-    border-right: 0;
-    border-bottom: 1px solid #e5e7eb;
+    width: 100%;
+    max-width: none;
+    border-right: none;
   }
 
-  .messaging-sidebar .chat-container {
-    padding: 14px;
+  .conversation-placeholder {
+    padding: 24px 20px;
   }
 
-  .messaging-sidebar .chat-header {
-    padding-bottom: 12px;
+  .placeholder-icon {
+    width: 68px;
+    height: 68px;
+    font-size: 30px;
   }
 
-  .messaging-sidebar .chat-search {
-    margin: 12px 0;
+  .conversation-placeholder h2 {
+    font-size: 20px;
   }
 
-  .messaging-sidebar .chat-user {
-    padding: 8px;
+  .conversation-placeholder p {
+    font-size: 14px;
+    max-width: 260px;
   }
-
-  .messaging-conversation .inbox-container {
-    height: 100%;
-  }
-}
-
-/* Make both grid columns stretch fully */
-.messaging-layout {
-  align-items: stretch;
-}
-
-/* Let the conversation occupy the entire right panel */
-.messaging-conversation {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 0;
-  height: 100%;
-  padding: 0;
-  overflow: hidden;
-}
-
-/* Remove standalone Inbox page sizing */
-.messaging-conversation .inbox-page {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  width: 100%;
-  min-width: 0;
-  min-height: 0;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background: transparent;
-}
-
-/* Make the Inbox container fill the available area */
-.messaging-conversation .inbox-container {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  width: 100%;
-  max-width: none;
-  min-width: 0;
-  min-height: 0;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-/* Only the message history should scroll */
-.messaging-conversation .inbox-messages {
-  flex: 1 1 auto;
-  min-width: 0;
-  min-height: 0;
-  overflow-y: auto;
-}
-
-/* Keep the header and input at their natural heights */
-.messaging-conversation .inbox-header,
-.messaging-conversation .inbox-form {
-  flex-shrink: 0;
 }

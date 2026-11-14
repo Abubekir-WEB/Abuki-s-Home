@@ -1,5 +1,14 @@
-.env;
-node_modules
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Uploaded files
 uploads/
+
+# Test reports
 chat-report.json
 chat-stress-report.json

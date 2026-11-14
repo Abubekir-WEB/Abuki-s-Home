@@ -1,359 +1,715 @@
-/* Posts.css v3 — layout fixes — professional feed with light + dark mode
-   Dark mode turns on automatically from the device setting,
-   or force it with <html data-theme="dark"> / data-theme="light". */
+/* ==========================================================================
+   Posts.css — Apple Feed & Social Experience (iOS & macOS Design)
+   Tailored for Posts.jsx with Apple typography, frosted glass & vibrant accents
+   ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   Root Variables & Color Tokens (Apple System Palette)
+   -------------------------------------------------------------------------- */
 :root {
-  --bg: #f7f8fa;
-  --surface: #ffffff;
-  --surface-hover: #f9fafb;
-  --border: #e5e7eb;
-  --text: #0f1419;
-  --text-secondary: #536471;
-  --accent: #1d9bf0;
-  --accent-hover: #1a8cd8;
-  --accent-soft: rgba(29, 155, 240, 0.1);
-  --glass: rgba(255, 255, 255, 0.82);
-  --shadow-sm: 0 1px 2px rgba(15, 20, 25, 0.04);
-  --shadow-md: 0 8px 24px rgba(15, 20, 25, 0.08);
-  --radius: 16px;
-  color-scheme: light;
+  --apple-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --apple-font-rounded: -apple-system, BlinkMacSystemFont, "SF Pro Rounded",
+    system-ui, sans-serif;
+
+  /* Light Theme */
+  --feed-bg: #f5f5f7;
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.06);
+  --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --card-hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.07), 0 2px 6px rgba(0, 0, 0, 0.03);
+
+  --text-primary: #1d1d1f;
+  --text-secondary: #86868b;
+  --text-tertiary: #a1a1a6;
+
+  --accent-blue: #0071e3;
+  --accent-blue-hover: #0077ed;
+  --accent-blue-subtle: rgba(0, 113, 227, 0.1);
+  --accent-red: #ff3b30;
+  --accent-red-subtle: rgba(255, 59, 48, 0.1);
+
+  --header-bg: rgba(255, 255, 255, 0.82);
+  --nav-bg: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --hairline: rgba(0, 0, 0, 0.08);
+
+  --news-card-bg: #fafafc;
+  --news-tag-bg: rgba(0, 113, 227, 0.08);
+  --news-tag-text: #0071e3;
+
+  --avatar-fallback-bg: linear-gradient(135deg, #0071e3, #42a5f5);
+  --avatar-fallback-text: #ffffff;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0b0d10;
-    --surface: #15181c;
-    --surface-hover: #1b1f24;
-    --border: #2a2f35;
-    --text: #e7e9ea;
-    --text-secondary: #8b98a5;
-    --accent-soft: rgba(29, 155, 240, 0.16);
-    --glass: rgba(11, 13, 16, 0.78);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
-    color-scheme: dark;
+  :root {
+    --feed-bg: #000000;
+    --card-bg: #1c1c1e;
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --card-hover-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+
+    --text-primary: #f5f5f7;
+    --text-secondary: #98989d;
+    --text-tertiary: #636366;
+
+    --accent-blue: #2997ff;
+    --accent-blue-hover: #47a6ff;
+    --accent-blue-subtle: rgba(41, 151, 255, 0.15);
+
+    --header-bg: rgba(28, 28, 30, 0.78);
+    --nav-bg: rgba(28, 28, 30, 0.82);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --hairline: rgba(255, 255, 255, 0.1);
+
+    --news-card-bg: #242426;
+    --news-tag-bg: rgba(41, 151, 255, 0.15);
+    --news-tag-text: #2997ff;
   }
 }
 
-:root[data-theme="dark"] {
-  --bg: #0b0d10;
-  --surface: #15181c;
-  --surface-hover: #1b1f24;
-  --border: #2a2f35;
-  --text: #e7e9ea;
-  --text-secondary: #8b98a5;
-  --accent-soft: rgba(29, 155, 240, 0.16);
-  --glass: rgba(11, 13, 16, 0.78);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
-  color-scheme: dark;
-}
-
-*, *::before, *::after { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  transition: background 0.25s ease, color 0.25s ease;
-}
-
+/* --------------------------------------------------------------------------
+   Global Layout & Feed Shell
+   -------------------------------------------------------------------------- */
 .posts-page {
-  max-width: 640px;
+  font-family: var(--apple-font);
+  background-color: var(--feed-bg);
+  color: var(--text-primary);
   min-height: 100vh;
-  width: 100%;
-  margin: 0 auto;
-  background: var(--surface);
-  border-inline: 1px solid var(--border);
-  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding-bottom: calc(88px + env(safe-area-inset-bottom, 20px));
 }
 
-/* Header */
+/* --------------------------------------------------------------------------
+   Sticky Top Apple Header
+   -------------------------------------------------------------------------- */
 .posts-header {
   position: sticky;
   top: 0;
-  z-index: 20;
-  height: 60px;
+  z-index: 40;
+  width: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
-  padding: 0 20px;
-  background: var(--surface);
-  backdrop-filter: saturate(180%) blur(16px);
-  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  padding: 14px 20px;
+  background: var(--header-bg);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 0.5px solid var(--hairline);
+  transition: all 0.3s var(--ease-apple);
 }
+
 .posts-header h1 {
   margin: 0;
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+  background: linear-gradient(180deg, var(--text-primary) 0%, var(--text-secondary) 180%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* Tabs */
+/* --------------------------------------------------------------------------
+   Segmented Navigation Tabs ("For you" / "Following")
+   -------------------------------------------------------------------------- */
 .posts-tabs {
   position: sticky;
-  top: 60px;
-  z-index: 19;
+  top: 54px;
+  z-index: 35;
+  width: 100%;
+  max-width: 620px;
   display: flex;
-  background: var(--surface);
-  backdrop-filter: saturate(180%) blur(16px);
-  -webkit-backdrop-filter: saturate(180%) blur(16px);
-  border-bottom: 1px solid var(--border);
+  justify-content: center;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--header-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid var(--hairline);
+  gap: 8px;
 }
-.tab {
+
+.posts-tabs .tab {
   flex: 1;
-  position: relative;
-  padding: 15px 0;
+  max-width: 200px;
   text-align: center;
-  font-size: 15px;
-  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.925rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--text-secondary);
   cursor: pointer;
+  transition: all 0.25s var(--ease-apple);
   user-select: none;
-  transition: background 0.2s, color 0.2s;
-}
-.tab:hover { background: var(--accent-soft); color: var(--text); }
-.tab.active { color: var(--text); font-weight: 700; }
-.tab.active::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 56px;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--accent);
-  transform: translateX(-50%);
+  position: relative;
 }
 
-/* Feed */
+.posts-tabs .tab:hover {
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  .posts-tabs .tab:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.posts-tabs .tab.active {
+  color: var(--text-primary);
+  background: var(--card-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0.5px 2px rgba(0, 0, 0, 0.04);
+}
+
+.posts-tabs .tab a {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Main Feed Container
+   -------------------------------------------------------------------------- */
 .posts-container {
+  width: 100%;
+  max-width: 620px;
+  padding: 18px 16px;
   display: flex;
   flex-direction: column;
-  gap: 0;
-  padding: 0;
+  gap: 16px;
+  box-sizing: border-box;
 }
 
-.posts-empty {
-  margin-top: 24px;
-  padding: 56px 32px;
-  text-align: center;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-}
-.posts-empty h2 {
-  margin: 0 0 8px;
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: 0;
-}
-.posts-empty p { margin: 0; color: var(--text-secondary); line-height: 1.5; }
-
+/* --------------------------------------------------------------------------
+   Post Card Component
+   -------------------------------------------------------------------------- */
 .post-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  padding: 18px;
   display: flex;
+  gap: 14px;
   align-items: flex-start;
-  width: 100%;
-  gap: 12px;
-  padding: 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border: 0;
-  border-bottom: 1px solid var(--border);
-  border-radius: 0;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  animation: fadeUp 0.35s ease both;
+  transition: transform 0.22s var(--ease-apple), box-shadow 0.22s var(--ease-apple), border-color 0.22s ease;
+  position: relative;
+  overflow: hidden;
 }
-.post-card:hover {
-  background: var(--surface-hover);
 
+.post-card:hover {
+  transform: translateY(-1.5px);
+  box-shadow: var(--card-hover-shadow);
+}
+
+/* View tracker helper element */
+.post-view-tracker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  z-index: -1;
+}
+
+/* Author Link & Avatar */
+.post-author-link {
+  text-decoration: none;
+  color: inherit;
+  flex-shrink: 0;
+  display: inline-block;
+  transition: opacity 0.2s ease;
+}
+
+.post-author-link:hover {
+  opacity: 0.85;
 }
 
 .post-avatar {
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: #fff;
-  font-size: 17px;
-  font-weight: 700;
-  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent-soft);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background: var(--avatar-fallback-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  border: 1.5px solid var(--card-bg);
+  flex-shrink: 0;
 }
 
-.post-body { flex: 1; min-width: 0; }
+.post-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
+.post-avatar span {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--avatar-fallback-text);
+  text-transform: uppercase;
+  font-family: var(--apple-font-rounded);
+}
+
+/* Post Body Structure */
+.post-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Post Header / Meta */
 .post-card-header {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
-  gap: 10px;
-  width: 100%;
-}
-.post-card-header h3 { margin: 0; font-size: 15px; font-weight: 700; }
-.post-card-header span { font-size: 14px; color: var(--text-secondary); }
-
-.post-content {
-  margin-top: 6px;
-  font-size: 15px;
-  line-height: 1.55;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.post-image {
-  display: block;
-  width: 100%;
-  max-height: 520px;
-  margin-top: 12px;
-  object-fit: contain;
-  height: auto;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--border);
-}
-
-/* Bottom navigation */
-.posts-navigation {
-  position: fixed;
-  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-  width: max-content;
-  max-width: calc(100% - 24px);
-  left: 50%;
-  z-index: 30;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px;
-  background: var(--surface);
-  backdrop-filter: saturate(180%) blur(16px);
-  -webkit-backdrop-filter: saturate(180%) blur(16px);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  box-shadow: var(--shadow-md);
-  transform: translateX(-50%);
-
-}
-.posts-navigation button {
-  display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
-  padding: 10px 18px;
-  font: inherit;
-  font-size: 14px;
-  font-weight: 600;
+}
+
+.post-author-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 8px;
+}
+
+.post-author-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.post-author-info h3:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+}
+
+.post-handle {
+  font-size: 0.85rem;
   color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Post Text Content */
+.post-content {
+  font-size: 0.98rem;
+  line-height: 1.52;
+  color: var(--text-primary);
+  word-break: break-word;
+  white-space: pre-wrap;
+  letter-spacing: -0.01em;
+}
+
+/* Post Image */
+.post-image {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--card-border);
+  background-color: rgba(0, 0, 0, 0.02);
+  margin-top: 4px;
+  transition: transform 0.3s var(--ease-apple);
+  cursor: pointer;
+}
+
+.post-image:hover {
+  filter: brightness(0.98);
+}
+
+/* --------------------------------------------------------------------------
+   Post Action Buttons (Like, Comment, View Count)
+   -------------------------------------------------------------------------- */
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-top: 8px;
+  margin-top: 4px;
+  border-top: 0.5px solid var(--hairline);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+.post-actions button,
+.post-actions > div,
+.post-actions .comment-btn,
+.post-actions .like-btn {
   background: transparent;
   border: none;
-  border-radius: 999px;
+  padding: 6px 10px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, transform 0.1s;
-}
-.posts-navigation button:hover { background: var(--accent-soft); color: var(--text); }
-.posts-navigation button:active { transform: scale(0.96); }
-.posts-navigation button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.nav-icon { font-size: 18px; line-height: 1; }
-
-.posts-navigation .create-post-button {
-  color: #fff;
-  background: var(--accent);
-  box-shadow: 0 4px 14px rgba(29, 155, 240, 0.35);
-}
-.posts-navigation .create-post-button:hover { color: #fff; background: var(--accent-hover); }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+  transition: all 0.2s ease;
 }
 
-@media (max-width: 480px) {
-  .posts-container { padding: 0; }
-  .post-card { padding: 14px 12px; gap: 10px; }
-  .posts-navigation { gap: 2px; }
-  .posts-navigation button { flex: 1 1 0; min-width: 0; justify-content: center; }
-  .posts-navigation button span:not(.nav-icon) { display: none; }
-  .posts-navigation button { padding: 12px; }
+.post-actions button:hover,
+.post-actions .comment-btn:hover {
+  color: var(--accent-blue);
+  background: var(--accent-blue-subtle);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; }
+.post-actions .like-btn:hover,
+.post-actions button[class*="like"]:hover {
+  color: var(--accent-red);
+  background: var(--accent-red-subtle);
 }
 
-/* Author details can wrap without pushing the follow button off-screen. */
-.post-author-info { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-.post-card-header h3, .post-card-header span { overflow-wrap: anywhere; }
-.follow-button-wrapper { flex: 0 0 auto; max-width: 45%; }
-.follow-button-wrapper button { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
-.post-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 12px; cursor: default; }
-.post-actions > * { min-width: 0; }
-.post-view-count { display: inline-flex; align-items: center; gap: 5px; color: var(--text-secondary); font-size: 13px; white-space: nowrap; }
-.post-card:focus-visible, .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-.tab { border: 0; background: transparent; font-family: inherit; }
-@media (max-width: 360px) {
-  .post-avatar { width: 36px; height: 36px; font-size: 15px; }
-  .post-card-header { gap: 6px; }
-  .post-actions { gap: 8px; }
-  .posts-navigation button { padding: 10px 8px; }
+/* View Counter Badge */
+.post-view-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: var(--text-tertiary);
+  margin-left: auto;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.03);
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
+@media (prefers-color-scheme: dark) {
+  .post-view-count {
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.post-view-count span:first-child {
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+/* --------------------------------------------------------------------------
+   Apple News Editorial Card Component
+   -------------------------------------------------------------------------- */
 .news-card {
-  width: 100%;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
+  background: var(--news-card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  background: #fff;
-  margin-bottom: 16px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s var(--ease-apple);
+  position: relative;
+}
+
+.news-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-hover-shadow);
 }
 
 .news-card-label {
-  padding: 14px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #64748b;
+  padding: 12px 18px 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--news-tag-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.news-card-label span:first-child {
+  font-size: 0.95rem;
 }
 
 .news-image {
   width: 100%;
-  max-height: 280px;
+  max-height: 240px;
   object-fit: cover;
   display: block;
 }
 
 .news-content {
-  padding: 16px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .news-content h3 {
-  font-size: 18px;
-  margin: 0 0 10px;
-  color: #111827;
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
 .news-content p {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #64748b;
-  margin-bottom: 12px;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
 }
 
 .news-content small {
-  display: block;
-  color: #94a3b8;
-  margin-bottom: 12px;
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  margin-top: 4px;
 }
 
 .news-content a {
-  display: inline-block;
-  color: #2563eb;
-  font-size: 14px;
+  align-self: flex-start;
+  margin-top: 6px;
+  font-size: 0.88rem;
   font-weight: 600;
+  color: var(--accent-blue);
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .news-content a:hover {
   text-decoration: underline;
+  opacity: 0.9;
+  transform: translateX(2px);
+}
+
+/* --------------------------------------------------------------------------
+   Empty & Loading States
+   -------------------------------------------------------------------------- */
+.posts-empty {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 42px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: var(--card-shadow);
+}
+
+.posts-empty h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.posts-empty p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.posts-empty button {
+  margin-top: 8px;
+  background: var(--accent-blue);
+  color: #ffffff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25);
+}
+
+.posts-empty button:hover {
+  background: var(--accent-blue-hover);
+  transform: scale(1.02);
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.35);
+}
+
+.posts-empty button:active {
+  transform: scale(0.98);
+}
+
+/* --------------------------------------------------------------------------
+   Floating iOS Bottom Navigation Dock
+   -------------------------------------------------------------------------- */
+.posts-navigation {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  width: calc(100% - 32px);
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 8px 12px;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+  background: var(--nav-bg);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.posts-navigation button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-apple);
+  position: relative;
+  min-width: 58px;
+}
+
+.posts-navigation button:hover {
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  .posts-navigation button:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.posts-navigation button:active {
+  transform: scale(0.92);
+}
+
+.posts-navigation .nav-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Elevated Apple "Create Post" Center Button */
+.posts-navigation .create-post-button {
+  background: var(--accent-blue);
+  color: #ffffff !important;
+  border-radius: var(--radius-full);
+  padding: 8px 18px;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.35);
+  font-weight: 600;
+  transition: all 0.22s var(--ease-apple);
+}
+
+.posts-navigation .create-post-button .nav-icon {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.posts-navigation .create-post-button:hover {
+  background: var(--accent-blue-hover) !important;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 20px rgba(0, 113, 227, 0.45);
+}
+
+.posts-navigation .create-post-button:active {
+  transform: scale(0.96);
+}
+
+/* Notifications Bell Badge Container */
+.posts-navigation .nav-notification {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.posts-navigation .nav-notification:hover {
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  .posts-navigation .nav-notification:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Design Adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .posts-container {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .post-card {
+    border-radius: var(--radius-md);
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .post-avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .news-card {
+    border-radius: var(--radius-md);
+  }
+
+  .posts-navigation {
+    bottom: 12px;
+    width: calc(100% - 24px);
+    padding: 6px 10px;
+  }
 }
